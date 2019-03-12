@@ -36,16 +36,6 @@ class RecipeListPage extends \Page
      */
     private static $many_many = [
         'Categories' => RecipeCategory::class,
-        //'Chefs' => SiteTree::class,
-    ];
-
-    /**
-     * @var array
-     */
-    private static $many_many_extraFields = [
-        /*'Chefs' => [
-            'SortOrder' => 'Int',
-        ],//*/
     ];
 
     /**
@@ -83,6 +73,12 @@ class RecipeListPage extends \Page
             );
         });
 
-        return parent::getCMSFields();
+        $fields = parent::getCMSFields();
+
+        $fields->removeByName([
+            'Sidebar',
+        ]);
+
+        return $fields;
     }
 }
