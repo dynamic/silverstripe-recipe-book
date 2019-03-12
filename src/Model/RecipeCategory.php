@@ -104,6 +104,19 @@ class RecipeCategory extends DataObject
     }
 
     /**
+     * @return \SilverStripe\ORM\DataList
+     */
+    public function getFeaturedRecipes()
+    {
+        $recipes = RecipePage::get()
+            ->filter('Categories.ID', $this->ID)
+            ->sort('Weight DESC')
+            ->limit(15);
+        $random = DB::get_conn()->random();
+        return $recipes->sort($random);
+    }
+
+    /**
      * @param null $member
      * @param array $context
      * @return bool

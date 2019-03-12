@@ -81,4 +81,12 @@ class RecipeListPage extends \Page
 
         return $fields;
     }
+
+    /**
+     * @return string
+     */
+    public function getLumberjackTitle()
+    {
+        return 'Recipes';
+    }
 }

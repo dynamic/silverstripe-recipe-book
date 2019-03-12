@@ -6,6 +6,7 @@ use Dynamic\Nucu\Model\EmbeddedObject;
 use Dynamic\RecipeBook\Model\RecipeCategory;
 use Dynamic\RecipeBook\Model\RecipeIngredient;
 use Sheadawson\Linkable\Forms\EmbeddedObjectField;
+use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
@@ -49,6 +50,7 @@ class RecipePage extends \Page
         'PrepTime' => 'Varchar(255)',
         'CookTime' => 'Varchar(255)',
         'Difficulty' => 'Varchar(255)',
+        'Weight' => 'Int',
     ];
 
     /**
@@ -105,6 +107,7 @@ class RecipePage extends \Page
         'PrepTime',
         'CookTime',
         'Difficulty',
+        'Weight',
     ];
 
     /**
@@ -112,7 +115,14 @@ class RecipePage extends \Page
      */
     private static $defaults = [
         'ShowInMenu' => false,
+        'Weight' => 25,
     ];
+
+    public function populateDefaults()
+    {
+        $this->Weight = 25;
+        return parent::populateDefaults();
+    }
 
     /**
      * @var bool
@@ -135,8 +145,16 @@ class RecipePage extends \Page
     public function getCMSFields()
     {
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
+
+            $fields->addFieldToTab(
+                'Root.Main',
+                DropdownField::create('Weight', 'Weight', $this->getWeightValues())
+                    ->setDescription('assign a weight to this recipe, 50 being heaviest'),
+                'MainContentHD'
+            );
+
             $fields->addFieldsToTab(
-                'Root.RecipeInformation',
+                'Root.Info',
                 [
                     $toggle = FieldGroup::create(
                         'RecipeStatistics',
@@ -209,7 +227,7 @@ class RecipePage extends \Page
         ]);
 
         $fields->addFieldToTab(
-            'Root.RecipeInformation',
+            'Root.Info',
             $content->setTitle('Recipe Description')
         );
 
@@ -238,5 +256,21 @@ class RecipePage extends \Page
         }
 
         return $recipes;
+    }
+
+    /**
+     * @return array
+     */
+    public function getWeightValues()
+    {
+        $x = 1;
+        $y = [];
+
+        while ($x <= 50) {
+            $y[$x] = $x;
+            $x++;
+        }
+
+        return $y;
     }
 }
