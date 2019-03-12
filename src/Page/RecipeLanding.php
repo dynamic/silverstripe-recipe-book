@@ -61,6 +61,11 @@ class RecipeLanding extends \Page
     ];
 
     /**
+     * @var string
+     */
+    private static $table_name = 'RecipeLanding';
+
+    /**
      * @return \SilverStripe\Forms\FieldList
      */
     public function getCMSFields()
