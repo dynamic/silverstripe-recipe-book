@@ -1,7 +1,8 @@
 <?php
 
-namespace Dynamic\RecipeBook\Page;
+namespace Dynamic\RecipeBook\Model;
 
+use Dynamic\RecipeBook\Page\RecipePage;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;

@@ -4,7 +4,7 @@ namespace Dynamic\RecipeBook\Page;
 
 class RecipeLandingController extends \PageController
 {
-    public function PaginatedList(HTTPRequest $request = null)
+    public function paginatedList(HTTPRequest $request = null)
     {
         if ($request === null) {
             $request = $this->request;

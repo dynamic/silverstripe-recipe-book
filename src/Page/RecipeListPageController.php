@@ -7,7 +7,7 @@ class RecipeListPageController extends \PageController
     /**
      * @return \SilverStripe\ORM\DataList
      */
-    public function PaginatedList(HTTPRequest $request = null)
+    public function paginatedList(HTTPRequest $request = null)
     {
         $cats = [];
         foreach ($this->Categories() as $category) {
