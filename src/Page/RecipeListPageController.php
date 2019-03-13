@@ -2,6 +2,8 @@
 
 namespace Dynamic\RecipeBook\Page;
 
+use SilverStripe\ORM\PaginatedList;
+
 class RecipeListPageController extends \PageController
 {
     /**
@@ -9,9 +11,13 @@ class RecipeListPageController extends \PageController
      */
     public function paginatedList(HTTPRequest $request = null)
     {
+        if(!$request instanceof HTTPRequest){
+            $request = $this->getRequest();
+        }
+
         $cats = [];
         foreach ($this->Categories() as $category) {
-            $cats->push($category->ID);
+            $cats[] = $category->ID;
         }
 
         $recipes = RecipePage::get()
