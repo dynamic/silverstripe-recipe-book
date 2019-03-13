@@ -2,6 +2,8 @@
 
 namespace Dynamic\RecipeBook\Page;
 
+use SilverStripe\ORM\PaginatedList;
+
 class RecipeLandingController extends \PageController
 {
     public function paginatedList(HTTPRequest $request = null)
