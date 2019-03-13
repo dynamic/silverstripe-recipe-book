@@ -5,8 +5,8 @@ namespace Dynamic\RecipeBook\Page;
 use Dynamic\RecipeBook\Model\RecipeCategory;
 use Dynamic\RecipeBook\Page\RecipePage;
 use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldList;
-use SilverStripe\Forms\ListboxField;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Lumberjack\Model\Lumberjack;
 
@@ -31,11 +31,8 @@ class RecipeListPage extends \Page
         'RecipesPerPage' => 'Int',
     ];
 
-    /**
-     * @var array
-     */
-    private static $many_many = [
-        'Categories' => RecipeCategory::class,
+    private static $has_one = [
+        'Category' => RecipeCategory::class,
     ];
 
     /**
@@ -67,9 +64,9 @@ class RecipeListPage extends \Page
 
             $fields->addFieldToTab(
                 'Root.Main',
-                ListboxField::create('Categories')
+                DropdownField::create('Categories')
                     ->setSource(RecipeCategory::get()->map())
-                    ->setTitle(_t(__CLASS__ . '.RecipeCategories', 'Recipe Categories'))
+                    ->setTitle(_t(__CLASS__ . '.RecipeCategory', 'Category'))
             );
         });
 

@@ -8,6 +8,7 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TreeDropdownField;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\DB;
 use SilverStripe\ORM\Hierarchy\Hierarchy;
 use SilverStripe\ORM\ManyManyList;
 
@@ -87,6 +88,7 @@ class RecipeCategory extends DataObject
             $fields->addFieldToTab('Root.Main', TextField::create('Title')->setTitle('Category Title'));
 
             if (RecipeCategory::get()->exclude('ID', $this->ID)->exists()) {
+                /*
                 $fields->addFieldtoTab(
                     'Root.Main',
                     TreeDropdownField::create('ParentID', 'Parent Category', RecipeCategory::class)
@@ -95,9 +97,13 @@ class RecipeCategory extends DataObject
                             return $category->ID != $this->ID;
                         })
                 );
+                */
             }
 
-            $fields->removeByName('Recipes');
+            $fields->removeByName([
+                'Recipes',
+                'ParentID',
+            ]);
         });
 
         return parent::getCMSFields();
