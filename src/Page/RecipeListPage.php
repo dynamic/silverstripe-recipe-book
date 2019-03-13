@@ -64,7 +64,7 @@ class RecipeListPage extends \Page
 
             $fields->addFieldToTab(
                 'Root.Main',
-                DropdownField::create('Categories')
+                DropdownField::create('CategoryID')
                     ->setSource(RecipeCategory::get()->map())
                     ->setTitle(_t(__CLASS__ . '.RecipeCategory', 'Category'))
             );
