@@ -1,0 +1,37 @@
+Dynamic\RecipeBook\Model\RecipeCategory:
+  one:
+    Title: "Category One"
+  two:
+    Title: "Category Two"
+
+Dynamic\RecipeBook\Model\RecipeDirection:
+  one:
+    Title: "Step One"
+  two:
+    Title: "Step Two"
+
+Dynamic\RecipeBook\Model\RecipeIngredient:
+  one:
+    Title: "Ingredient One"
+  two:
+    Title: "Ingredient Two"
+
+
+Dynamic\RecipeBook\Page\RecipePage:
+  one:
+    Title: "Recipe One"
+    Categories: =>Dynamic\RecipeBook\Model\RecipeCategory.one
+    Directions: =>Dynamic\RecipeBook\Model\RecipeDirection.one, =>Dynamic\RecipeBook\Model\RecipeDirection.two
+    Ingredients: =>Dynamic\RecipeBook\Model\RecipeIngredient.one, =>Dynamic\RecipeBook\Model\RecipeIngredient.two
+  two:
+    Title: "Recipe Two"
+
+Dynamic\RecipeBook\Page\RecipeLanding:
+  default:
+    Title: "Recipes"
+
+Dynamic\RecipeBook\Page\RecipeListPage:
+  one:
+    Title: "Breakfast Recipes"
+  two:
+    Title: "Lunch Recipes"

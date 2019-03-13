@@ -14,7 +14,7 @@ class RecipeAdmin extends ModelAdmin
     /**
      * @var string
      */
-    private static $menu_title= 'Recipes';
+    private static $menu_title = 'Recipes';
 
     /**
      * @var string
