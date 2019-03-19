@@ -62,11 +62,14 @@ class RecipeListPage extends \Page
                 'Content'
             );
 
+            $exclude = RecipeListPage::get()->exclude('ID', $this->ID)->column('CategoryID');
+
             $fields->addFieldToTab(
                 'Root.Main',
                 DropdownField::create('CategoryID')
-                    ->setSource(RecipeCategory::get()->map())
+                    ->setSource(RecipeCategory::get()->exclude('ID', $exclude)->map())
                     ->setTitle(_t(__CLASS__ . '.RecipeCategory', 'Category'))
+                    ->setEmptyString('')
             );
         });
 
