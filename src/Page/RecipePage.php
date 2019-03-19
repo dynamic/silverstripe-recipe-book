@@ -13,7 +13,6 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
-use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\HasManyList;
@@ -47,7 +46,7 @@ class RecipePage extends \Page
      * @var array
      */
     private static $db = [
-        'Servings' => 'Int',
+        'Servings' => 'Varchar(20)',
         'PrepTime' => 'Varchar(255)',
         'CookTime' => 'Varchar(255)',
         'Difficulty' => 'Varchar(255)',
@@ -160,7 +159,7 @@ class RecipePage extends \Page
                     $toggle = FieldGroup::create(
                         'RecipeStatistics',
                         [
-                            NumericField::create('Servings')
+                            TextField::create('Servings')
                                 ->setTitle('Servings'),
                             TextField::create('PrepTime')
                                 ->setTitle('Prep Time'),
