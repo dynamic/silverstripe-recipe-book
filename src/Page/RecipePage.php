@@ -2,6 +2,7 @@
 
 namespace Dynamic\RecipeBook\Page;
 
+use Dynamic\Nucu\Page\NucuProductPage;
 use Dynamic\RecipeBook\Model\RecipeCategory;
 use Dynamic\RecipeBook\Model\RecipeDirection;
 use Dynamic\RecipeBook\Model\RecipeIngredient;
@@ -12,6 +13,7 @@ use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
+use SilverStripe\Forms\GridField\GridFieldAddNewButton;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;
@@ -73,6 +75,7 @@ class RecipePage extends \Page
      */
     private static $many_many = [
         'Categories' => RecipeCategory::class,
+        'RelatedProducts' => NucuProductPage::class,
     ];
 
     /**
@@ -80,6 +83,9 @@ class RecipePage extends \Page
      */
     private static $many_many_extraFields = [
         'Categories' => [
+            'SortOrder' => 'Int',
+        ],
+        'RelatedProducts' => [
             'SortOrder' => 'Int',
         ],
     ];
@@ -203,6 +209,16 @@ class RecipePage extends \Page
                 )
             );
 
+            $fields->addFieldToTab(
+                'Root.Products',
+                $categories = GridField::create(
+                    'RelatedProducts',
+                    'Related Products',
+                    $this->RelatedProducts()->sort('SortOrder'),
+                    $productConfig = GridFieldConfig_RelationEditor::create()
+                )
+            );
+
             $ingredientsConfig
                 ->addComponent(new GridFieldOrderableRows('Sort'))
                 ->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
@@ -215,6 +231,13 @@ class RecipePage extends \Page
                 ->addComponent(new GridFieldOrderableRows('SortOrder'))
                 ->addComponent(new GridFieldAddExistingSearchButton())
                 ->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
+
+            $productConfig
+                ->removeComponentsByType(GridFieldAddNewButton::class)
+                ->removeComponentsByType(GridFieldAddExistingAutocompleter::class)
+                ->addComponent(new GridFieldOrderableRows('SortOrder'))
+                ->addComponent(new GridFieldAddExistingSearchButton());
+
         });
 
         $fields = parent::getCMSFields();
@@ -240,6 +263,14 @@ class RecipePage extends \Page
     public function getPrimaryCategory()
     {
         return $this->Categories()->sort('SortOrder')->first();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRelatedProductsList()
+    {
+        return $this->RelatedProducts()->sort('SortOrder');
     }
 
     /**
