@@ -4,7 +4,7 @@ namespace Dynamic\RecipeBook\Model;
 
 use Dynamic\RecipeBook\Page\RecipePage;
 use SilverStripe\Forms\FieldList;
-use SilverStripe\Forms\TextField;
+use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use SilverStripe\ORM\DataObject;
 
 /**
@@ -22,7 +22,7 @@ class RecipeDirection extends DataObject
      * @var array
      */
     private static $db = [
-        'Title' => 'Text',
+        'Title' => 'HTMLText',
         'Sort' => 'Int',
     ];
 
@@ -51,8 +51,9 @@ class RecipeDirection extends DataObject
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
             $fields->addFieldToTab(
                 'Root.Main',
-                TextField::create('Title')
+                HTMLEditorField::create('Title')
                     ->setTitle('Direction Step')
+                    ->setRows(5)
             );
 
             $fields->removeByName('Sort');
