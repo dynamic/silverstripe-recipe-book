@@ -2,6 +2,7 @@
 
 namespace Dynamic\RecipeBook\Model;
 
+use Dynamic\RecipeBook\Page\RecipeListPage;
 use Dynamic\RecipeBook\Page\RecipePage;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldList;
@@ -50,6 +51,13 @@ class RecipeCategory extends DataObject
      */
     private static $has_one = [
         'Parent' => RecipeCategory::class,
+    ];
+
+    /**
+     * @var array
+     */
+    private static $belongs_to = [
+        'List' => RecipeListPage::class,
     ];
 
     /**
@@ -120,6 +128,17 @@ class RecipeCategory extends DataObject
             ->limit(15);
         $random = DB::get_conn()->random();
         return $recipes->sort($random);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getListLink()
+    {
+        if ($this->List()->exists()) {
+            return $this->List()->Link();
+        }
+        return false;
     }
 
     /**
