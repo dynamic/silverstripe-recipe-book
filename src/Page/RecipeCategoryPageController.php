@@ -17,11 +17,7 @@ class RecipeCategoryPageController extends \PageController
             $request = $this->getRequest();
         }
 
-        $categories = RecipeCategoryPage::get()->filter('ParentID', $this->data()->ID)->column('ID');
-        $categories[] = $this->data()->ID;
-
-        $recipes = RecipePage::get()
-            ->filterAny('ParentID', $categories);
+        $recipes = $this->data()->getRecipeList();
 
         $start = ($request->getVar('start')) ? (int)$request->getVar('start') : 0;
 

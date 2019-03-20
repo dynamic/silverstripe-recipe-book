@@ -2,11 +2,11 @@
 
 namespace Dynamic\RecipeBook\Test\Page;
 
-use Dynamic\RecipeBook\Page\RecipeListPage;
+use Dynamic\RecipeBook\Page\RecipeCategoryPage;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\Forms\FieldList;
 
-class RecipeListPageTest extends SapphireTest
+class RecipeCategoryPageTest extends SapphireTest
 {
     /**
      * @var string
@@ -18,7 +18,7 @@ class RecipeListPageTest extends SapphireTest
      */
     public function testGetCMSFields()
     {
-        $object = $this->objFromFixture(RecipeListPage::class, 'one');
+        $object = $this->objFromFixture(RecipeCategoryPage::class, 'one');
         $fields = $object->getCMSFields();
         $this->assertInstanceOf(FieldList::class, $fields);
     }

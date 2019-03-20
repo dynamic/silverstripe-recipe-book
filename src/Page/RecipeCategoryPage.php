@@ -4,6 +4,7 @@ namespace Dynamic\RecipeBook\Page;
 
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\NumericField;
+use SilverStripe\ORM\DB;
 
 class RecipeCategoryPage extends \Page
 {
@@ -76,15 +77,26 @@ class RecipeCategoryPage extends \Page
         return $fields;
     }
 
+    public function getRecipeList()
+    {
+        $categories = RecipeCategoryPage::get()->filter('ParentID', $this->data()->ID)->column('ID');
+        $categories[] = $this->data()->ID;
+
+        $recipes = RecipePage::get()
+            ->filterAny('ParentID', $categories);
+
+        return $recipes;
+    }
+
     /**
      * @return \SilverStripe\ORM\DataList
      */
     public function getFeaturedRecipes()
     {
-        $recipes = RecipePage::get()
-            ->filter('Categories.ID', $this->ID)
+        $recipes = $this->getRecipeList()
             ->sort('Weight DESC')
             ->limit(15);
+
         $random = DB::get_conn()->random();
         return $recipes->sort($random);
     }
