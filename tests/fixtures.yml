@@ -1,4 +1,4 @@
-Dynamic\RecipeBook\Model\RecipeCategory:
+Dynamic\RecipeBook\Page\RecipeCategoryPage:
   one:
     Title: "Category One"
   two:
@@ -20,7 +20,7 @@ Dynamic\RecipeBook\Model\RecipeIngredient:
 Dynamic\RecipeBook\Page\RecipePage:
   one:
     Title: "Recipe One"
-    Categories: =>Dynamic\RecipeBook\Model\RecipeCategory.one
+    Categories: =>Dynamic\RecipeBook\Page\RecipeCategoryPage.one
     Directions: =>Dynamic\RecipeBook\Model\RecipeDirection.one, =>Dynamic\RecipeBook\Model\RecipeDirection.two
     Ingredients: =>Dynamic\RecipeBook\Model\RecipeIngredient.one, =>Dynamic\RecipeBook\Model\RecipeIngredient.two
   two:
@@ -29,9 +29,3 @@ Dynamic\RecipeBook\Page\RecipePage:
 Dynamic\RecipeBook\Page\RecipeLanding:
   default:
     Title: "Recipes"
-
-Dynamic\RecipeBook\Page\RecipeListPage:
-  one:
-    Title: "Breakfast Recipes"
-  two:
-    Title: "Lunch Recipes"

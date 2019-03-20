@@ -2,7 +2,6 @@
 
 namespace Dynamic\RecipeBook\Page;
 
-use Dynamic\RecipeBook\Model\RecipeCategory;
 use Dynamic\RecipeBook\Model\RecipeDirection;
 use Dynamic\RecipeBook\Model\RecipeIngredient;
 use Sheadawson\Linkable\Forms\EmbeddedObjectField;
@@ -12,11 +11,14 @@ use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
+use SilverStripe\Forms\GridField\GridFieldEditButton;
 use SilverStripe\Forms\TextField;
-use SilverStripe\ORM\DataObject;
+use SilverStripe\Forms\GridField\GridFieldDeleteAction;use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\HasManyList;
 use SilverStripe\ORM\ManyManyList;
+use SilverStripe\Versioned\GridFieldArchiveAction;
 use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
@@ -72,7 +74,7 @@ class RecipePage extends \Page
      * @var array
      */
     private static $many_many = [
-        'Categories' => RecipeCategory::class,
+        'Categories' => RecipeCategoryPage::class,
     ];
 
     /**
@@ -132,7 +134,7 @@ class RecipePage extends \Page
     /**
      * @var bool
      */
-    private static $show_in_sitetree = false;
+    //private static $show_in_sitetree = false;
 
     /**
      * @var array
@@ -198,7 +200,7 @@ class RecipePage extends \Page
                 $categories = GridField::create(
                     'Categories',
                     'Categories',
-                    $this->Categories()->sort('SortOrder'),
+                    $this->Categories()->exclude('ID', $this->ParentID)->sort('SortOrder'),
                     $catConfig = GridFieldConfig_RelationEditor::create()
                 )
             );
@@ -212,9 +214,17 @@ class RecipePage extends \Page
                 ->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
 
             $catConfig
-                ->addComponent(new GridFieldOrderableRows('SortOrder'))
-                ->addComponent(new GridFieldAddExistingSearchButton())
-                ->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
+                ->removeComponentsByType([
+                    GridFieldAddExistingAutocompleter::class,
+                    GridFieldArchiveAction::class,
+                    GridFieldEditButton::class,
+                ])
+                ->addComponents(
+                    new GridFieldOrderableRows('SortOrder'),
+                    $list = new GridFieldAddExistingSearchButton()
+                );
+
+            $list->setSearchList(RecipeCategoryPage::get()->exclude('ID', $this->ParentID));
         });
 
         $fields = parent::getCMSFields();
@@ -239,7 +249,23 @@ class RecipePage extends \Page
      */
     public function getPrimaryCategory()
     {
-        return $this->Categories()->sort('SortOrder')->first();
+        return $this->Parent();
+    }
+
+    /**
+     * @return \SilverStripe\ORM\DataList
+     */
+    public function getCategoryList()
+    {
+        $categories[] = $this->ParentID;
+
+        foreach ($this->Categories() as $cat) {
+            $categories[] = $cat->ID;
+        }
+
+        $records = RecipeCategoryPage::get()->byIDs($categories);
+
+        return $records;
     }
 
     /**
@@ -251,7 +277,7 @@ class RecipePage extends \Page
 
         $recipes = RecipePage::get()->exclude('ID', $this->ID);
 
-        if ($category instanceof RecipeCategory) {
+        if ($category instanceof RecipeCategoryPage) {
             $recipes = $recipes->filter('Categories.ID', $this->getPrimaryCategory()->ID);
         }
 

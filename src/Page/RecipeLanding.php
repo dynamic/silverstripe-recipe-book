@@ -2,7 +2,6 @@
 
 namespace Dynamic\RecipeBook\Page;
 
-use Dynamic\RecipeBook\Model\RecipeCategory;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 use SilverStripe\Forms\GridField\GridFieldAddNewButton;
@@ -24,7 +23,7 @@ class RecipeLanding extends \Page
      * @var array
      */
     private static $many_many = [
-        'FeaturedCategories' => RecipeCategory::class,
+        'FeaturedCategories' => RecipeCategoryPage::class,
     ];
 
     /**
@@ -57,7 +56,7 @@ class RecipeLanding extends \Page
      * @var array
      */
     private static $allowed_children = [
-        RecipeListPage::class,
+        RecipeCategoryPage::class,
     ];
 
     /**

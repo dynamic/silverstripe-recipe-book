@@ -5,11 +5,7 @@ namespace Dynamic\RecipeBook\Page;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\ORM\PaginatedList;
 
-/**
- * Class RecipeListPageController
- * @package Dynamic\RecipeBook\Page
- */
-class RecipeListPageController extends \PageController
+class RecipeCategoryPageController extends \PageController
 {
     /**
      * @param HTTPRequest|null $request
@@ -21,8 +17,7 @@ class RecipeListPageController extends \PageController
             $request = $this->getRequest();
         }
 
-        $recipes = RecipePage::get()
-            ->filterAny('Categories.ID', $this->CategoryID);
+        $recipes = $this->data()->getRecipeList();
 
         $start = ($request->getVar('start')) ? (int)$request->getVar('start') : 0;
 
@@ -33,6 +28,6 @@ class RecipeListPageController extends \PageController
         // allow $records to be updated via extension
         $this->extend('updatePaginatedList', $records);
 
-        return $records;
+        return $recipes;
     }
 }
