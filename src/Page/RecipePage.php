@@ -2,7 +2,6 @@
 
 namespace Dynamic\RecipeBook\Page;
 
-use Dynamic\RecipeBook\Model\RecipeCategory;
 use Dynamic\RecipeBook\Model\RecipeDirection;
 use Dynamic\RecipeBook\Model\RecipeIngredient;
 use Sheadawson\Linkable\Forms\EmbeddedObjectField;
@@ -72,7 +71,7 @@ class RecipePage extends \Page
      * @var array
      */
     private static $many_many = [
-        'Categories' => RecipeCategory::class,
+        'Categories' => RecipeCategoryPage::class,
     ];
 
     /**
@@ -132,7 +131,7 @@ class RecipePage extends \Page
     /**
      * @var bool
      */
-    private static $show_in_sitetree = false;
+    //private static $show_in_sitetree = false;
 
     /**
      * @var array
@@ -239,7 +238,7 @@ class RecipePage extends \Page
      */
     public function getPrimaryCategory()
     {
-        return $this->Categories()->sort('SortOrder')->first();
+        return $this->Parent();
     }
 
     /**
@@ -251,7 +250,7 @@ class RecipePage extends \Page
 
         $recipes = RecipePage::get()->exclude('ID', $this->ID);
 
-        if ($category instanceof RecipeCategory) {
+        if ($category instanceof RecipeCategoryPage) {
             $recipes = $recipes->filter('Categories.ID', $this->getPrimaryCategory()->ID);
         }
 

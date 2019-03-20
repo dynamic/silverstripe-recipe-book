@@ -58,6 +58,7 @@ class RecipeLanding extends \Page
      */
     private static $allowed_children = [
         RecipeListPage::class,
+        RecipeCategoryPage::class,
     ];
 
     /**

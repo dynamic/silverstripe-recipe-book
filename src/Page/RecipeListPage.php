@@ -39,7 +39,7 @@ class RecipeListPage extends \Page
      * @var array
      */
     private static $extensions = [
-        Lumberjack::class,
+        //Lumberjack::class,
     ];
 
     /**
