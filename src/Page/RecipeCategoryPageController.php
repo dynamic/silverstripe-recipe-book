@@ -3,7 +3,6 @@
 namespace Dynamic\RecipeBook\Page;
 
 use SilverStripe\Control\HTTPRequest;
-use SilverStripe\Dev\Debug;
 use SilverStripe\ORM\PaginatedList;
 
 class RecipeCategoryPageController extends \PageController
