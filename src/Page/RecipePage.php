@@ -11,11 +11,14 @@ use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
+use SilverStripe\Forms\GridField\GridFieldEditButton;
 use SilverStripe\Forms\TextField;
-use SilverStripe\ORM\DataObject;
+use SilverStripe\Forms\GridField\GridFieldDeleteAction;use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\HasManyList;
 use SilverStripe\ORM\ManyManyList;
+use SilverStripe\Versioned\GridFieldArchiveAction;
 use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
@@ -197,7 +200,7 @@ class RecipePage extends \Page
                 $categories = GridField::create(
                     'Categories',
                     'Categories',
-                    $this->Categories()->sort('SortOrder'),
+                    $this->Categories()->exclude('ID', $this->ParentID)->sort('SortOrder'),
                     $catConfig = GridFieldConfig_RelationEditor::create()
                 )
             );
@@ -211,9 +214,17 @@ class RecipePage extends \Page
                 ->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
 
             $catConfig
-                ->addComponent(new GridFieldOrderableRows('SortOrder'))
-                ->addComponent(new GridFieldAddExistingSearchButton())
-                ->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
+                ->removeComponentsByType([
+                    GridFieldAddExistingAutocompleter::class,
+                    GridFieldArchiveAction::class,
+                    GridFieldEditButton::class,
+                ])
+                ->addComponents(
+                    new GridFieldOrderableRows('SortOrder'),
+                    $list = new GridFieldAddExistingSearchButton()
+                );
+
+            $list->setSearchList(RecipeCategoryPage::get()->exclude('ID', $this->ParentID));
         });
 
         $fields = parent::getCMSFields();

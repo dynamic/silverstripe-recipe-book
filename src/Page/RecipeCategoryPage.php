@@ -2,6 +2,7 @@
 
 namespace Dynamic\RecipeBook\Page;
 
+use SilverStripe\Dev\Debug;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\ORM\DB;
@@ -83,7 +84,10 @@ class RecipeCategoryPage extends \Page
         $categories[] = $this->data()->ID;
 
         $recipes = RecipePage::get()
-            ->filterAny('ParentID', $categories);
+            ->filterAny([
+                'ParentID' => $categories,
+                'Categories.ID' => $categories,
+            ]);
 
         return $recipes;
     }
