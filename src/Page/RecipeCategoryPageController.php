@@ -3,6 +3,7 @@
 namespace Dynamic\RecipeBook\Page;
 
 use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Dev\Debug;
 use SilverStripe\ORM\PaginatedList;
 
 class RecipeCategoryPageController extends \PageController
@@ -24,10 +25,10 @@ class RecipeCategoryPageController extends \PageController
         $records = PaginatedList::create($recipes, $request);
         $records->setPageStart($start);
         $records->setPageLength($this->data()->RecipesPerPage);
-
+        
         // allow $records to be updated via extension
         $this->extend('updatePaginatedList', $records);
 
-        return $recipes;
+        return $records;
     }
 }
