@@ -14,8 +14,10 @@ use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use SilverStripe\Forms\GridField\GridFieldEditButton;
+use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\GridField\GridFieldDeleteAction;use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\DB;
 use SilverStripe\ORM\HasManyList;
 use SilverStripe\ORM\ManyManyList;
 use SilverStripe\Versioned\GridFieldArchiveAction;
@@ -53,6 +55,7 @@ class RecipePage extends \Page
         'CookTime' => 'Varchar(255)',
         'Difficulty' => 'Varchar(255)',
         'Weight' => 'Int',
+        'RelatedLimit' => 'Int',
     ];
 
     /**
@@ -118,6 +121,7 @@ class RecipePage extends \Page
     private static $defaults = [
         'ShowInMenu' => false,
         'Weight' => 25,
+        'RelatedLimit' => 2,
     ];
 
     public function populateDefaults()
@@ -225,6 +229,10 @@ class RecipePage extends \Page
                 );
 
             $list->setSearchList(RecipeCategoryPage::get()->exclude('ID', $this->ParentID));
+
+            $fields->addFieldsToTab('Root.Related', [
+                NumericField::create('RelatedLimit', 'Related Recipes to show'),
+            ]);
         });
 
         $fields = parent::getCMSFields();
@@ -273,15 +281,21 @@ class RecipePage extends \Page
      */
     public function getRelatedRecipes()
     {
-        $category = $this->getPrimaryCategory();
+        $categories = $this->getCategoryList()->column('ID');
 
-        $recipes = RecipePage::get()->exclude('ID', $this->ID);
+        $recipes = RecipePage::get()
+            ->exclude('ID', $this->ID)
+            ->filterAny([
+                'ParentID' => $categories,
+                'Categories.ID' => $categories,
+            ])
+            ->sort('Weight DESC')
+            ->limit(15);
 
-        if ($category instanceof RecipeCategoryPage) {
-            $recipes = $recipes->filter('Categories.ID', $this->getPrimaryCategory()->ID);
-        }
+        $random = DB::get_conn()->random();
+        $records = $recipes->sort($random)->limit($this->RelatedLimit);
 
-        return $recipes;
+        return $records;
     }
 
     /**
