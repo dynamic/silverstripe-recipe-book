@@ -244,6 +244,22 @@ class RecipePage extends \Page
     /**
      * @return \SilverStripe\ORM\DataList
      */
+    public function getCategoryList()
+    {
+        $categories[] = $this->ParentID;
+
+        foreach ($this->Categories() as $cat) {
+            $categories[] = $cat->ID;
+        }
+
+        $records = RecipeCategoryPage::get()->byIDs($categories);
+
+        return $records;
+    }
+
+    /**
+     * @return \SilverStripe\ORM\DataList
+     */
     public function getRelatedRecipes()
     {
         $category = $this->getPrimaryCategory();
