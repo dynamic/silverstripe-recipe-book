@@ -15,6 +15,7 @@ use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use SilverStripe\Forms\GridField\GridFieldEditButton;
 use SilverStripe\Forms\NumericField;
+use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\GridField\GridFieldDeleteAction;use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DB;
@@ -107,7 +108,7 @@ class RecipePage extends \Page
      */
     private static $summary_fields = [
         'Title',
-        'PrimaryCategory' => 'Main Category',
+        'PrimaryCategory.Title' => 'Main Category',
         'Servings',
         'PrepTime',
         'CookTime',
@@ -199,14 +200,18 @@ class RecipePage extends \Page
                 )
             );
 
-            $fields->addFieldToTab(
-                'Root.Categories',
-                $categories = GridField::create(
-                    'Categories',
-                    'Categories',
-                    $this->Categories()->exclude('ID', $this->ParentID)->sort('SortOrder'),
-                    $catConfig = GridFieldConfig_RelationEditor::create()
-                )
+            $fields->addFieldsToTab(
+                'Root.Categories', [
+                    ReadonlyField::create('PrimaryCategoryDisplay')
+                        ->setTitle('Primary Category')
+                        ->setValue($this->getPrimaryCategory()->Title),
+                    $categories = GridField::create(
+                        'Categories',
+                        'Additional Categories',
+                        $this->Categories()->exclude('ID', $this->ParentID)->sort('SortOrder'),
+                        $catConfig = GridFieldConfig_RelationEditor::create()
+                    )
+                ]
             );
 
             $ingredientsConfig
