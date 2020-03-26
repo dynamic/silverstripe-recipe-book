@@ -8,7 +8,7 @@
     ],
     "license": "BSD-3-Clause",
     "require": {
-        "sheadawson/silverstripe-linkable": "^2.0",
+        "dynamic/silverstripe-linkable": "^1.0",
         "silverstripe/recipe-cms": "^4.0@dev",
         "silverstripe/lumberjack": "^2.0@dev",
         "symbiote/silverstripe-gridfieldextensions": "^3.0@dev"
