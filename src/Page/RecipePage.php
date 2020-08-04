@@ -55,15 +55,6 @@ class RecipePage extends \Page
         'PrepTime' => 'Varchar(255)',
         'CookTime' => 'Varchar(255)',
         'Difficulty' => 'Varchar(255)',
-        'Weight' => 'Int',
-        'RelatedLimit' => 'Int',
-    ];
-
-    /**
-     * @var array
-     */
-    private static $has_one = [
-        'Video' => EmbeddedObject::class,
     ];
 
     /**
@@ -113,7 +104,6 @@ class RecipePage extends \Page
         'PrepTime',
         'CookTime',
         'Difficulty',
-        'Weight',
     ];
 
     /**
@@ -121,10 +111,12 @@ class RecipePage extends \Page
      */
     private static $defaults = [
         'ShowInMenu' => false,
-        'Weight' => 25,
         'RelatedLimit' => 2,
     ];
 
+    /**
+     * @return RecipePage
+     */
     public function populateDefaults()
     {
         $this->Weight = 25;
@@ -139,7 +131,7 @@ class RecipePage extends \Page
     /**
      * @var bool
      */
-    //private static $show_in_sitetree = false;
+    private static $show_in_sitetree = false;
 
     /**
      * @var array
@@ -153,15 +145,8 @@ class RecipePage extends \Page
     {
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
 
-            $fields->addFieldToTab(
-                'Root.Main',
-                DropdownField::create('Weight', 'Weight', $this->getWeightValues())
-                    ->setDescription('assign a weight to this recipe, 50 being heaviest'),
-                'MainContentHD'
-            );
-
             $fields->addFieldsToTab(
-                'Root.Info',
+                'Root.Main',
                 [
                     $toggle = FieldGroup::create(
                         'RecipeStatistics',
@@ -175,9 +160,9 @@ class RecipePage extends \Page
                             TextField::create('Difficulty')
                                 ->setTitle('Difficulty'),
                         ]
-                    )->setTitle('Recipe Statistics'),
-                    $video = EmbeddedObjectField::create('Video', 'Video', $this->Video()),
-                ]
+                    )->setTitle('Info')
+                ],
+                'Content'
             );
 
             $fields->addFieldToTab(
@@ -234,27 +219,9 @@ class RecipePage extends \Page
                 );
 
             $list->setSearchList(RecipeCategoryPage::get()->exclude('ID', $this->ParentID));
-
-            $fields->addFieldsToTab('Root.Related', [
-                NumericField::create('RelatedLimit', 'Related Recipes to show'),
-            ]);
         });
 
-        $fields = parent::getCMSFields();
-
-        $content = $fields->dataFieldByName('Content');
-
-        $fields->removeByName([
-            'Content',
-            'Sidebar',
-        ]);
-
-        $fields->addFieldToTab(
-            'Root.Info',
-            $content->setTitle('Recipe Description')
-        );
-
-        return $fields;
+        return parent::getCMSFields();;
     }
 
     /**

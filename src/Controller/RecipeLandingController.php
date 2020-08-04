@@ -15,7 +15,10 @@ class RecipeLandingController extends \PageController
 
         $records = PaginatedList::create($this->data()->Children(), $request);
         $records->setPageStart($start);
-        $records->setPageLength($this->data()->PerPage);
+
+        if ($limit = $this->data()->PerPage) {
+            $records->setPageLength($limit);
+        }
 
         // allow $records to be updated via extension
         $this->owner->extend('updatePaginatedList', $records);

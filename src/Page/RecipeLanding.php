@@ -2,6 +2,7 @@
 
 namespace Dynamic\RecipeBook\Page;
 
+use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 use SilverStripe\Forms\GridField\GridFieldAddNewButton;
@@ -69,36 +70,32 @@ class RecipeLanding extends \Page
      */
     public function getCMSFields()
     {
-        $fields = parent::getCMSFields();
+        $this->beforeUpdateCMSFields(function (FieldList $fields) {
+            if ($this->ID) {
+                $config = GridFieldConfig_RelationEditor::create()
+                    ->addComponent(new GridFieldOrderableRows('SortOrder'))
+                    ->removeComponentsByType(GridFieldAddExistingAutocompleter::class)
+                    ->removeComponentsByType(GridFieldAddNewButton::class)
+                    ->addComponent(new GridFieldAddExistingSearchButton());
+                $cats = $this->FeaturedCategories()->sort('SortOrder');
+                $catsField = GridField::create(
+                    'FeaturedCategories',
+                    'Featured Categories',
+                    $cats,
+                    $config
+                );
 
-        $fields->removeByName([
-            'Sidebar',
-        ]);
+                $fields->addFieldsToTab('Root.Featured', array(
+                    $catsField,
+                ));
+            }
 
-        if ($this->ID) {
-            $config = GridFieldConfig_RelationEditor::create()
-                ->addComponent(new GridFieldOrderableRows('SortOrder'))
-                ->removeComponentsByType(GridFieldAddExistingAutocompleter::class)
-                ->removeComponentsByType(GridFieldAddNewButton::class)
-                ->addComponent(new GridFieldAddExistingSearchButton());
-            $cats = $this->FeaturedCategories()->sort('SortOrder');
-            $catsField = GridField::create(
-                'FeaturedCategories',
-                'Featured Categories',
-                $cats,
-                $config
-            );
+            $fields->addFieldsToTab('Root.Browse', [
+                NumericField::create('PerPage', 'Categories per page'),
+            ]);
+        });
 
-            $fields->addFieldsToTab('Root.Featured', array(
-                $catsField,
-            ));
-        }
-
-        $fields->addFieldsToTab('Root.Browse', [
-            NumericField::create('PerPage', 'Categories per page'),
-        ]);
-
-        return $fields;
+        return parent::getCMSFields();
     }
 
     /**
