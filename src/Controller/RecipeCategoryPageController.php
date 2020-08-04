@@ -23,8 +23,11 @@ class RecipeCategoryPageController extends \PageController
 
         $records = PaginatedList::create($recipes, $request);
         $records->setPageStart($start);
-        $records->setPageLength($this->data()->RecipesPerPage);
-        
+
+        if ($limit = $this->data()->RecipesPerPage) {
+            $records->setPageLength($limit);
+        }
+
         // allow $records to be updated via extension
         $this->extend('updatePaginatedList', $records);
 
