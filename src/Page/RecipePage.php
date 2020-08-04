@@ -115,15 +115,6 @@ class RecipePage extends \Page
     ];
 
     /**
-     * @return RecipePage
-     */
-    public function populateDefaults()
-    {
-        $this->Weight = 25;
-        return parent::populateDefaults();
-    }
-
-    /**
      * @var bool
      */
     private static $can_be_root = false;
@@ -261,28 +252,11 @@ class RecipePage extends \Page
                 'ParentID' => $categories,
                 'Categories.ID' => $categories,
             ])
-            ->sort('Weight DESC')
             ->limit(15);
 
         $random = DB::get_conn()->random();
         $records = $recipes->sort($random)->limit($this->RelatedLimit);
 
         return $records;
-    }
-
-    /**
-     * @return array
-     */
-    public function getWeightValues()
-    {
-        $x = 1;
-        $y = [];
-
-        while ($x <= 50) {
-            $y[$x] = $x;
-            $x++;
-        }
-
-        return $y;
     }
 }
