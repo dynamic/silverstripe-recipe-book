@@ -6,7 +6,6 @@ use Dynamic\RecipeBook\Model\RecipeDirection;
 use Dynamic\RecipeBook\Model\RecipeIngredient;
 use Sheadawson\Linkable\Forms\EmbeddedObjectField;
 use Sheadawson\Linkable\Models\EmbeddedObject;
-use SilverStripe\Assets\Image;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\FieldList;
