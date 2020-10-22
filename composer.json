@@ -31,10 +31,7 @@
     "extra": {
         "branch-alias": {
             "dev-master": "3.x-dev"
-        },
-        "expose": [
-            "client/dist"
-        ]
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
