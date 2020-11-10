@@ -91,7 +91,7 @@
 
                 <!-- PHPMessDetector -->
                 <source type="pmd">
-                    <file name="logs/pmd-cpd.xml" />
+                    <file name="logs/pmd.xml" />
                 </source>
 
                 <!-- PHPUnit Coverage XML -->

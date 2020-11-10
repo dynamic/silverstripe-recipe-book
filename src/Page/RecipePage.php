@@ -17,7 +17,8 @@ use SilverStripe\Forms\GridField\GridFieldEditButton;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\TextField;
-use SilverStripe\Forms\GridField\GridFieldDeleteAction;use SilverStripe\ORM\DataObject;
+use SilverStripe\Forms\GridField\GridFieldDeleteAction;
+use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DB;
 use SilverStripe\ORM\HasManyList;
 use SilverStripe\ORM\ManyManyList;
@@ -177,7 +178,8 @@ class RecipePage extends \Page
             );
 
             $fields->addFieldsToTab(
-                'Root.Categories', [
+                'Root.Categories',
+                [
                     ReadonlyField::create('PrimaryCategoryDisplay')
                         ->setTitle('Primary Category')
                         ->setValue($this->getPrimaryCategory()->Title),
@@ -212,7 +214,8 @@ class RecipePage extends \Page
             $list->setSearchList(RecipeCategoryPage::get()->exclude('ID', $this->ParentID));
         });
 
-        return parent::getCMSFields();;
+        return parent::getCMSFields();
+        ;
     }
 
     /**
