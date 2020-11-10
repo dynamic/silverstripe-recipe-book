@@ -41,6 +41,15 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
  */
 class RecipePage extends \Page
 {
+    /**
+     * @var string
+     */
+    private static $singular_name = 'Recipe';
+
+    /**
+     * @var string
+     */
+    private static $plural_name = 'Recipes';
 
     /**
      * @var string
@@ -79,31 +88,6 @@ class RecipePage extends \Page
         'Categories' => [
             'SortOrder' => 'Int',
         ],
-    ];
-
-    /**
-     * @var array
-     */
-    private static $searchable_fields = [
-        'Title',
-        'Ingredients.Title',
-        'Categories.Title',
-        'Servings',
-        'PrepTime',
-        'CookTime',
-        'Difficulty',
-    ];
-
-    /**
-     * @var array
-     */
-    private static $summary_fields = [
-        'Title',
-        'PrimaryCategory.Title' => 'Main Category',
-        'Servings',
-        'PrepTime',
-        'CookTime',
-        'Difficulty',
     ];
 
     /**
