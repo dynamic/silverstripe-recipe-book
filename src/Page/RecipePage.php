@@ -136,70 +136,71 @@ class RecipePage extends \Page
                             TextField::create('Difficulty')
                                 ->setTitle('Difficulty'),
                         ]
-                    )->setTitle('Info')
+                    )->setTitle('Info'),
                 ],
                 'Content'
             );
 
-            $fields->addFieldToTab(
-                'Root.Ingredients',
-                $ingredients = GridField::create(
-                    'Ingredients',
-                    'Ingredients',
-                    $this->Ingredients(),
-                    $ingredientsConfig = GridFieldConfig_RelationEditor::create()
-                )
-            );
-
-            $fields->addFieldToTab(
-                'Root.Directions',
-                $directions = GridField::create(
-                    'Directions',
-                    'Directions',
-                    $this->Directions(),
-                    $directionsConfig = GridFieldConfig_RelationEditor::create()
-                )
-            );
-
-            $fields->addFieldsToTab(
-                'Root.Categories',
-                [
-                    ReadonlyField::create('PrimaryCategoryDisplay')
-                        ->setTitle('Primary Category')
-                        ->setValue($this->getPrimaryCategory()->Title),
-                    $categories = GridField::create(
-                        'Categories',
-                        'Additional Categories',
-                        $this->Categories()->exclude('ID', $this->ParentID)->sort('SortOrder'),
-                        $catConfig = GridFieldConfig_RelationEditor::create()
+            if ($this->exists()) {
+                $fields->addFieldToTab(
+                    'Root.Ingredients',
+                    $ingredients = GridField::create(
+                        'Ingredients',
+                        'Ingredients',
+                        $this->Ingredients(),
+                        $ingredientsConfig = GridFieldConfig_RelationEditor::create()
                     )
-                ]
-            );
-
-            $ingredientsConfig
-                ->addComponent(new GridFieldOrderableRows('Sort'))
-                ->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
-
-            $directionsConfig
-                ->addComponent(new GridFieldOrderableRows('Sort'))
-                ->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
-
-            $catConfig
-                ->removeComponentsByType([
-                    GridFieldAddExistingAutocompleter::class,
-                    GridFieldArchiveAction::class,
-                    GridFieldEditButton::class,
-                ])
-                ->addComponents(
-                    new GridFieldOrderableRows('SortOrder'),
-                    $list = new GridFieldAddExistingSearchButton()
                 );
 
-            $list->setSearchList(RecipeCategoryPage::get()->exclude('ID', $this->ParentID));
+                $fields->addFieldToTab(
+                    'Root.Directions',
+                    $directions = GridField::create(
+                        'Directions',
+                        'Directions',
+                        $this->Directions(),
+                        $directionsConfig = GridFieldConfig_RelationEditor::create()
+                    )
+                );
+
+                $fields->addFieldsToTab(
+                    'Root.Categories',
+                    [
+                        ReadonlyField::create('PrimaryCategoryDisplay')
+                            ->setTitle('Primary Category')
+                            ->setValue($this->getPrimaryCategory()->Title),
+                        $categories = GridField::create(
+                            'Categories',
+                            'Additional Categories',
+                            $this->Categories()->exclude('ID', $this->ParentID)->sort('SortOrder'),
+                            $catConfig = GridFieldConfig_RelationEditor::create()
+                        ),
+                    ]
+                );
+
+                $ingredientsConfig
+                    ->addComponent(new GridFieldOrderableRows('Sort'))
+                    ->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
+
+                $directionsConfig
+                    ->addComponent(new GridFieldOrderableRows('Sort'))
+                    ->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
+
+                $catConfig
+                    ->removeComponentsByType([
+                        GridFieldAddExistingAutocompleter::class,
+                        GridFieldArchiveAction::class,
+                        GridFieldEditButton::class,
+                    ])
+                    ->addComponents(
+                        new GridFieldOrderableRows('SortOrder'),
+                        $list = new GridFieldAddExistingSearchButton()
+                    );
+
+                $list->setSearchList(RecipeCategoryPage::get()->exclude('ID', $this->ParentID));
+            }
         });
 
         return parent::getCMSFields();
-        ;
     }
 
     /**
