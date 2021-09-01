@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.0.1](https://github.com/dynamic/silverstripe-recipe-book/tree/1.0.1) (2021-08-31)
+
+[Full Changelog](https://github.com/dynamic/silverstripe-recipe-book/compare/1.0.0...1.0.1)
+
+**Fixed bugs:**
+
+- BUG default sort value not assigned on ingredient/direction creation [\#41](https://github.com/dynamic/silverstripe-recipe-book/issues/41)
+
+**Closed issues:**
+
+- FEATURE RecipeAdmin - rename to Recipes [\#35](https://github.com/dynamic/silverstripe-recipe-book/issues/35)
+
+**Merged pull requests:**
+
+- BUGFIX default sort value not set when creating ingredient/direction [\#42](https://github.com/dynamic/silverstripe-recipe-book/pull/42) ([muskie9](https://github.com/muskie9))
+- BUGFIX if RecipePage does not exist it errors when creating new in some cases [\#40](https://github.com/dynamic/silverstripe-recipe-book/pull/40) ([muskie9](https://github.com/muskie9))
+- Added permission checks for directions [\#39](https://github.com/dynamic/silverstripe-recipe-book/pull/39) ([mak001](https://github.com/mak001))
+- TESTS Travis and Scrutinizer [\#38](https://github.com/dynamic/silverstripe-recipe-book/pull/38) ([jsirish](https://github.com/jsirish))
+- TESTS initial GitHub workflow [\#37](https://github.com/dynamic/silverstripe-recipe-book/pull/37) ([jsirish](https://github.com/jsirish))
+- REFACTOR RecipePage - remove summary and searchable fields [\#36](https://github.com/dynamic/silverstripe-recipe-book/pull/36) ([jsirish](https://github.com/jsirish))
+- BUGFIX remove all Weight references [\#34](https://github.com/dynamic/silverstripe-recipe-book/pull/34) ([jsirish](https://github.com/jsirish))
+- REFACTOR Repo cleanup, README [\#33](https://github.com/dynamic/silverstripe-recipe-book/pull/33) ([jsirish](https://github.com/jsirish))
+- REFACTOR CMS Design, remove project specific data [\#32](https://github.com/dynamic/silverstripe-recipe-book/pull/32) ([jsirish](https://github.com/jsirish))
+- REFACTOR switch to dynamic/silverstripe-linkable [\#31](https://github.com/dynamic/silverstripe-recipe-book/pull/31) ([jsirish](https://github.com/jsirish))
+
 ## [1.0.0](https://github.com/dynamic/silverstripe-recipe-book/tree/1.0.0) (2020-03-26)
 
 [Full Changelog](https://github.com/dynamic/silverstripe-recipe-book/compare/dc05f252551ba4ca092014170b20113ef2b6c09d...1.0.0)
