@@ -64,11 +64,26 @@ class RecipeIngredient extends DataObject
     public function getCMSFields()
     {
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
+            $recipe = $fields->dataFieldByName('RecipeID');
+            $fields->replaceField('RecipeID', $recipe->performReadonlyTransformation());
+
             $fields->addFieldToTab('Root.Main', TextField::create('Title')->setTitle('Ingredient and measurement'));
             $fields->removeByName('Sort');
         });
 
         return parent::getCMSFields();
+    }
+
+    /**
+     *
+     */
+    protected function onBeforeWrite()
+    {
+        parent::onBeforeWrite();
+
+        if (!$this->Sort) {
+            $this->Sort = static::get()->filter('RecipeID', $this->RecipeID)->max('Sort') + 1;
+        }
     }
 
     /**

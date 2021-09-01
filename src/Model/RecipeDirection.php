@@ -49,6 +49,9 @@ class RecipeDirection extends DataObject
     public function getCMSFields()
     {
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
+            $recipe = $fields->dataFieldByName('RecipeID');
+            $fields->replaceField('RecipeID', $recipe->performReadonlyTransformation());
+
             $fields->addFieldToTab(
                 'Root.Main',
                 HTMLEditorField::create('Title')
@@ -60,6 +63,18 @@ class RecipeDirection extends DataObject
         });
 
         return parent::getCMSFields();
+    }
+
+    /**
+     *
+     */
+    protected function onBeforeWrite()
+    {
+        parent::onBeforeWrite();
+
+        if (!$this->Sort) {
+            $this->Sort = static::get()->filter('RecipeID', $this->RecipeID)->max('Sort') + 1;
+        }
     }
 
     /**
