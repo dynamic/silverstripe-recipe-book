@@ -14,7 +14,7 @@ use SilverStripe\ORM\DataObject;
  * @property string $Title
  * @property int $Sort
  * @property int $RecipeID
- * @method RecipePage RecipePage()
+ * @method RecipePage Recipe()
  */
 class RecipeIngredient extends DataObject
 {
