@@ -2,7 +2,6 @@
 
 namespace Dynamic\RecipeBook\Page;
 
-use SilverStripe\Dev\Debug;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\NumericField;
 use SilverStripe\ORM\DataList;

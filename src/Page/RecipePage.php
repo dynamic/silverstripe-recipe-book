@@ -4,20 +4,14 @@ namespace Dynamic\RecipeBook\Page;
 
 use Dynamic\RecipeBook\Model\RecipeDirection;
 use Dynamic\RecipeBook\Model\RecipeIngredient;
-use Sheadawson\Linkable\Forms\EmbeddedObjectField;
-use Sheadawson\Linkable\Models\EmbeddedObject;
-use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
-use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use SilverStripe\Forms\GridField\GridFieldEditButton;
-use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\TextField;
-use SilverStripe\Forms\GridField\GridFieldDeleteAction;
 use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DB;
@@ -35,8 +29,6 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
  * @property string $PrepTime
  * @property string $CookTime
  * @property string $Difficulty
- * @property int $VideoID
- * @method EmbeddedObject Video()
  * @method HasManyList Ingredients()
  * @method HasManyList Directions()
  * @method ManyManyList Categories()
@@ -145,7 +137,7 @@ class RecipePage extends \Page
             if ($this->exists()) {
                 $fields->addFieldToTab(
                     'Root.Ingredients',
-                    $ingredients = GridField::create(
+                    GridField::create(
                         'Ingredients',
                         'Ingredients',
                         $this->Ingredients(),
@@ -155,7 +147,7 @@ class RecipePage extends \Page
 
                 $fields->addFieldToTab(
                     'Root.Directions',
-                    $directions = GridField::create(
+                    GridField::create(
                         'Directions',
                         'Directions',
                         $this->Directions(),
@@ -169,7 +161,7 @@ class RecipePage extends \Page
                         ReadonlyField::create('PrimaryCategoryDisplay')
                             ->setTitle('Primary Category')
                             ->setValue($this->getPrimaryCategory()->Title),
-                        $categories = GridField::create(
+                        GridField::create(
                             'Categories',
                             'Additional Categories',
                             $this->Categories()->exclude('ID', $this->ParentID)->sort('SortOrder'),
