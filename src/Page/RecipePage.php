@@ -18,6 +18,7 @@ use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\GridField\GridFieldDeleteAction;
+use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DB;
 use SilverStripe\ORM\HasManyList;
@@ -45,22 +46,22 @@ class RecipePage extends \Page
     /**
      * @var string
      */
-    private static $singular_name = 'Recipe';
+    private static string $singular_name = 'Recipe';
 
     /**
      * @var string
      */
-    private static $plural_name = 'Recipes';
+    private static string $plural_name = 'Recipes';
 
     /**
      * @var string
      */
-    private static $table_name = 'RecipePage';
+    private static string $table_name = 'RecipePage';
 
     /**
      * @var array
      */
-    private static $db = [
+    private static array $db = [
         'Servings' => 'Varchar(20)',
         'PrepTime' => 'Varchar(255)',
         'CookTime' => 'Varchar(255)',
@@ -70,7 +71,7 @@ class RecipePage extends \Page
     /**
      * @var array
      */
-    private static $has_many = [
+    private static array $has_many = [
         'Ingredients' => RecipeIngredient::class,
         'Directions' => RecipeDirection::class,
     ];
@@ -78,14 +79,14 @@ class RecipePage extends \Page
     /**
      * @var array
      */
-    private static $many_many = [
+    private static array $many_many = [
         'Categories' => RecipeCategoryPage::class,
     ];
 
     /**
      * @var array
      */
-    private static $many_many_extraFields = [
+    private static array $many_many_extraFields = [
         'Categories' => [
             'SortOrder' => 'Int',
         ],
@@ -94,7 +95,7 @@ class RecipePage extends \Page
     /**
      * @var array
      */
-    private static $defaults = [
+    private static array $defaults = [
         'ShowInMenu' => false,
         'RelatedLimit' => 2,
     ];
@@ -102,22 +103,22 @@ class RecipePage extends \Page
     /**
      * @var bool
      */
-    private static $can_be_root = false;
+    private static bool $can_be_root = false;
 
     /**
      * @var bool
      */
-    private static $show_in_sitetree = false;
+    private static bool $show_in_sitetree = false;
 
     /**
      * @var array
      */
-    private static $allowed_children = [];
+    private static array $allowed_children = [];
 
     /**
      * @return FieldList
      */
-    public function getCMSFields()
+    public function getCMSFields(): FieldList
     {
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
 
@@ -204,17 +205,17 @@ class RecipePage extends \Page
     }
 
     /**
-     * @return RecipeCategory|DataObject|null
+     * @return RecipeCategoryPage|DataObject
      */
-    public function getPrimaryCategory()
+    public function getPrimaryCategory(): RecipeCategoryPage|DataObject
     {
         return $this->Parent();
     }
 
     /**
-     * @return \SilverStripe\ORM\DataList
+     * @return DataList
      */
-    public function getCategoryList()
+    public function getCategoryList(): DataList
     {
         $categories[] = $this->ParentID;
 
@@ -222,17 +223,15 @@ class RecipePage extends \Page
             $categories[] = $cat->ID;
         }
 
-        $records = RecipeCategoryPage::get()->byIDs($categories);
-
-        return $records;
+        return RecipeCategoryPage::get()->byIDs($categories);
     }
 
     /**
-     * @return \SilverStripe\ORM\DataList
+     * @return DataList
      */
-    public function getRelatedRecipes()
+    public function getRelatedRecipes(): DataList
     {
-        $categories = $this->getCategoryList()->column('ID');
+        $categories = $this->getCategoryList()->column();
 
         $recipes = RecipePage::get()
             ->exclude('ID', $this->ID)
@@ -243,8 +242,6 @@ class RecipePage extends \Page
             ->limit(15);
 
         $random = DB::get_conn()->random();
-        $records = $recipes->sort($random)->limit($this->RelatedLimit);
-
-        return $records;
+        return $recipes->sort($random)->limit($this->RelatedLimit);
     }
 }

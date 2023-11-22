@@ -8,6 +8,7 @@ use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 use SilverStripe\Forms\GridField\GridFieldAddNewButton;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use SilverStripe\Forms\NumericField;
+use SilverStripe\ORM\ManyManyList;
 use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
@@ -16,21 +17,21 @@ class RecipeLanding extends \Page
     /**
      * @var array
      */
-    private static $db = [
+    private static array $db = [
         'PerPage' => 'Int',
     ];
 
     /**
      * @var array
      */
-    private static $many_many = [
+    private static array $many_many = [
         'FeaturedCategories' => RecipeCategoryPage::class,
     ];
 
     /**
      * @var array
      */
-    private static $many_many_extraFields = [
+    private static array $many_many_extraFields = [
         'FeaturedCategories' => [
             'SortOrder' => 'Int',
         ],
@@ -39,36 +40,36 @@ class RecipeLanding extends \Page
     /**
      * @var array
      */
-    private static $defaults = [
+    private static array $defaults = [
         'PerPage' => 9,
     ];
 
     /**
      * @var string
      */
-    private static $singular_name = 'Recipe Landing Page';
+    private static string $singular_name = 'Recipe Landing Page';
 
     /**
      * @var string
      */
-    private static $plural_name = 'Recipe Landing Pages';
+    private static string $plural_name = 'Recipe Landing Pages';
 
     /**
      * @var array
      */
-    private static $allowed_children = [
+    private static array $allowed_children = [
         RecipeCategoryPage::class,
     ];
 
     /**
      * @var string
      */
-    private static $table_name = 'RecipeLanding';
+    private static string $table_name = 'RecipeLanding';
 
     /**
-     * @return \SilverStripe\Forms\FieldList
+     * @return FieldList
      */
-    public function getCMSFields()
+    public function getCMSFields(): FieldList
     {
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
             if ($this->ID) {
@@ -99,9 +100,9 @@ class RecipeLanding extends \Page
     }
 
     /**
-     * @return mixed
+     * @return ManyManyList
      */
-    public function getFeaturedList()
+    public function getFeaturedList(): ManyManyList
     {
         return $this->FeaturedCategories()->sort('SortOrder');
     }
