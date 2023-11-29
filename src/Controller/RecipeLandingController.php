@@ -2,11 +2,16 @@
 
 namespace Dynamic\RecipeBook\Page;
 
+use SilverStripe\Control\HTTPRequest;
 use SilverStripe\ORM\PaginatedList;
 
 class RecipeLandingController extends \PageController
 {
-    public function paginatedList(HTTPRequest $request = null)
+    /**
+     * @param HTTPRequest|null $request
+     * @return PaginatedList
+     */
+    public function paginatedList(HTTPRequest $request = null): PaginatedList
     {
         if ($request === null) {
             $request = $this->request;
@@ -21,7 +26,7 @@ class RecipeLandingController extends \PageController
         }
 
         // allow $records to be updated via extension
-        $this->owner->extend('updatePaginatedList', $records);
+        $this->extend('updatePaginatedList', $records);
 
         return $records;
     }

@@ -2,9 +2,9 @@
 
 namespace Dynamic\RecipeBook\Page;
 
-use SilverStripe\Dev\Debug;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\NumericField;
+use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DB;
 
 class RecipeCategoryPage extends \Page
@@ -12,43 +12,43 @@ class RecipeCategoryPage extends \Page
     /**
      * @var string
      */
-    private static $singular_name = 'Recipe Category';
+    private static string $singular_name = 'Recipe Category';
 
     /**
      * @var string
      */
-    private static $plural_name = 'Recipe Categories';
+    private static string $plural_name = 'Recipe Categories';
 
     /**
      * @var string
      */
-    private static $description = 'A category for recipes.';
+    private static string $description = 'A category for recipes.';
 
     /**
      * @var array
      */
-    private static $db = [
+    private static array $db = [
         'RecipesPerPage' => 'Int',
     ];
 
     /**
      * @var array
      */
-    private static $belongs_many_many = [
+    private static array $belongs_many_many = [
         'Recipes' => RecipePage::class,
     ];
 
     /**
      * @var array
      */
-    private static $defaults = [
+    private static array $defaults = [
         'RecipesPerPage' => 9,
     ];
 
     /**
      * @var array
      */
-    private static $allowed_children = [
+    private static array $allowed_children = [
         RecipeCategoryPage::class,
         RecipePage::class,
     ];
@@ -56,9 +56,12 @@ class RecipeCategoryPage extends \Page
     /**
      * @var string
      */
-    private static $table_name = 'RecipeCategoryPage';
+    private static string $table_name = 'RecipeCategoryPage';
 
-    public function getCMSFields()
+    /**
+     * @return FieldList
+     */
+    public function getCMSFields(): FieldList
     {
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
             $fields->addFieldToTab(
@@ -78,24 +81,25 @@ class RecipeCategoryPage extends \Page
         return $fields;
     }
 
-    public function getRecipeList()
+    /**
+     * @return DataList
+     */
+    public function getRecipeList(): DataList
     {
         $categories = RecipeCategoryPage::get()->filter('ParentID', $this->data()->ID)->column('ID');
         $categories[] = $this->data()->ID;
 
-        $recipes = RecipePage::get()
+        return RecipePage::get()
             ->filterAny([
                 'ParentID' => $categories,
                 'Categories.ID' => $categories,
             ]);
-
-        return $recipes;
     }
 
     /**
-     * @return \SilverStripe\ORM\DataList
+     * @return DataList
      */
-    public function getFeaturedRecipes()
+    public function getFeaturedRecipes(): DataList
     {
         $recipes = $this->getRecipeList()
             ->sort('Weight DESC')

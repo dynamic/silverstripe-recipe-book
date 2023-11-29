@@ -21,7 +21,7 @@ class RecipeDirection extends DataObject
     /**
      * @var array
      */
-    private static $db = [
+    private static array $db = [
         'Title' => 'HTMLText',
         'Sort' => 'Int',
     ];
@@ -29,24 +29,24 @@ class RecipeDirection extends DataObject
     /**
      * @var array
      */
-    private static $has_one = [
+    private static array $has_one = [
         'Recipe' => RecipePage::class,
     ];
 
     /**
      * @var string
      */
-    private static $default_sort = 'Sort';
+    private static string $default_sort = 'Sort';
 
     /**
      * @var string
      */
-    private static $table_name = 'RecipeDirection';
+    private static string $table_name = 'RecipeDirection';
 
     /**
      * @return FieldList
      */
-    public function getCMSFields()
+    public function getCMSFields(): FieldList
     {
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
             $recipe = $fields->dataFieldByName('RecipeID');
@@ -66,9 +66,9 @@ class RecipeDirection extends DataObject
     }
 
     /**
-     *
+     * @return void
      */
-    protected function onBeforeWrite()
+    protected function onBeforeWrite(): void
     {
         parent::onBeforeWrite();
 
@@ -82,7 +82,7 @@ class RecipeDirection extends DataObject
      * @param array $context
      * @return bool
      */
-    public function canCreate($member = null, $context = [])
+    public function canCreate($member = null, $context = []): bool
     {
         return true;
     }
@@ -91,7 +91,7 @@ class RecipeDirection extends DataObject
      * @param null $member
      * @return bool
      */
-    public function canEdit($member = null)
+    public function canEdit($member = null): bool
     {
         return true;
     }
@@ -100,7 +100,7 @@ class RecipeDirection extends DataObject
      * @param null $member
      * @return bool
      */
-    public function canDelete($member = null)
+    public function canDelete($member = null): bool
     {
         return true;
     }
@@ -109,7 +109,7 @@ class RecipeDirection extends DataObject
      * @param null $member
      * @return bool
      */
-    public function canView($member = null)
+    public function canView($member = null): bool
     {
         return true;
     }

@@ -11,7 +11,7 @@ class RecipeCategoryPageController extends \PageController
      * @param HTTPRequest|null $request
      * @return PaginatedList
      */
-    public function paginatedList(HTTPRequest $request = null)
+    public function paginatedList(HTTPRequest $request = null): PaginatedList
     {
         if (!$request instanceof HTTPRequest) {
             $request = $this->getRequest();
