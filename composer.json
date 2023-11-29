@@ -23,6 +23,14 @@
             "Dynamic\\RecipeBook\\Test\\": "tests/"
         }
     },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "silverstripe/vendor-plugin": true,
+            "silverstripe/recipe-plugin": true
+        },
+        "process-timeout": 600
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "4.x-dev"
