@@ -15,10 +15,17 @@ use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\GridField\GridField;
 use Dynamic\RecipeBook\Model\RecipeDirection;
 use Dynamic\RecipeBook\Model\RecipeIngredient;
-use SilverStripe\AssetAdmin\Forms\UploadField;
+use Dynamic\RecipeBook\Page\RecipeCategoryPage;
+use SilverStripe\Forms\GridField\GridFieldConfig;
 use SilverStripe\Versioned\GridFieldArchiveAction;
+use SilverStripe\Forms\GridField\GridFieldButtonRow;
 use SilverStripe\Forms\GridField\GridFieldEditButton;
+use Symbiote\GridFieldExtensions\GridFieldTitleHeader;
+use SilverStripe\Forms\GridField\GridFieldDeleteAction;
+use SilverStripe\Forms\GridField\GridFieldToolbarHeader;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
+use Symbiote\GridFieldExtensions\GridFieldEditableColumns;
+use Symbiote\GridFieldExtensions\GridFieldAddNewInlineButton;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
@@ -39,21 +46,25 @@ class RecipePage extends \Page
 {
     /**
      * @var string
+     * @config
      */
     private static string $singular_name = 'Recipe';
 
     /**
      * @var string
+     * @config
      */
     private static string $plural_name = 'Recipes';
 
     /**
      * @var string
+     * @config
      */
     private static string $table_name = 'RecipePage';
 
     /**
      * @var array
+     * @config
      */
     private static array $db = [
         'Servings' => 'Varchar(20)',
@@ -64,6 +75,7 @@ class RecipePage extends \Page
 
     /**
      * @var array
+     * @config
      */
     private static $has_one = [
         'Image' => Image::class,
@@ -79,6 +91,7 @@ class RecipePage extends \Page
 
     /**
      * @var array
+     * @config
      */
     private static array $many_many = [
         'Categories' => RecipeCategoryPage::class,
@@ -86,6 +99,7 @@ class RecipePage extends \Page
 
     /**
      * @var array
+     * @config
      */
     private static array $many_many_extraFields = [
         'Categories' => [
@@ -112,6 +126,7 @@ class RecipePage extends \Page
 
     /**
      * @var array
+     * @config
      */
     private static array $defaults = [
         'ShowInMenu' => false,
@@ -120,16 +135,19 @@ class RecipePage extends \Page
 
     /**
      * @var bool
+     * @config
      */
     private static bool $can_be_root = false;
 
     /**
      * @var bool
+     * @config
      */
     private static bool $show_in_sitetree = false;
 
     /**
      * @var array
+     * @config
      */
     private static array $allowed_children = [];
 
@@ -178,7 +196,7 @@ class RecipePage extends \Page
                         'Ingredients',
                         'Ingredients',
                         $this->Ingredients(),
-                        $ingredientsConfig = GridFieldConfig_RelationEditor::create()
+                        $ingredientsConfig = GridFieldConfig::create()
                     )
                 );
 
@@ -188,7 +206,7 @@ class RecipePage extends \Page
                         'Directions',
                         'Directions',
                         $this->Directions(),
-                        $directionsConfig = GridFieldConfig_RelationEditor::create()
+                        $directionsConfig = GridFieldConfig::create()
                     )
                 );
 
@@ -209,11 +227,31 @@ class RecipePage extends \Page
 
                 $ingredientsConfig
                     ->addComponent(new GridFieldOrderableRows('Sort'))
-                    ->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
+                    ->removeComponentsByType(GridFieldAddExistingAutocompleter::class)
+                    ->addComponent(GridFieldButtonRow::create('before'))
+                    ->addComponent(GridFieldToolbarHeader::create())
+                    ->addComponent(GridFieldTitleHeader::create())
+                    ->addComponent(GridFieldEditableColumns::create())
+                    ->addComponent(GridFieldDeleteAction::create())
+                    ->addComponent(GridFieldAddNewInlineButton::create());
 
                 $directionsConfig
                     ->addComponent(new GridFieldOrderableRows('Sort'))
-                    ->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
+                    ->removeComponentsByType(GridFieldAddExistingAutocompleter::class)
+                    ->addComponent(GridFieldButtonRow::create('before'))
+                    ->addComponent(GridFieldToolbarHeader::create())
+                    ->addComponent(GridFieldTitleHeader::create())
+                    ->addComponent(GridFieldEditableColumns::create())
+                    ->addComponent(GridFieldDeleteAction::create())
+                    ->addComponent(GridFieldAddNewInlineButton::create())
+                    ->addComponent(GridFieldEditButton::create());
+
+                $directionsConfig->getComponentByType(GridFieldEditableColumns::class)->setDisplayFields(array(
+                    'Title' => array(
+                        'title' => 'Title',
+                        'field' => TextField::class
+                    ),
+                ));
 
                 $catConfig
                     ->removeComponentsByType([
