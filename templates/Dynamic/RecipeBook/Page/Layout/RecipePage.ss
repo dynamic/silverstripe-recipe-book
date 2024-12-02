@@ -9,6 +9,9 @@
     <!-- Title and Recipe Info -->
     <div class="row">
         <div class="col-12">
+            <% if $PrimaryCategory %>
+                <p class="text-uppercase text-muted small mb-1">$PrimaryCategory.Title</p>
+            <% end_if %>
             <h1 class="card-title">$Title</h1>
             <div class="d-flex align-items-center text-muted mb-3">
                 <div class="me-4">
@@ -71,12 +74,14 @@
         </div>
         <div class="col-md-8">
             <h2>Instructions</h2>
-            <% loop $Directions.Sort('Sort') %>
-                <div class="mb-3 d-flex align-items-center">
-                    <span class="me-2">$Pos.</span>
-                    <span>$Title</span>
-                </div>
-            <% end_loop %>
+            <ul class="list-group">
+                <% loop $Directions.Sort('Sort') %>
+                    <li class="list-group-item d-flex align-items-center">
+                        <span class="me-2">$Pos.</span>
+                        <span>$Title</span>
+                    </li>
+                <% end_loop %>
+            </ul>
         </div>
     </div>
 </div>

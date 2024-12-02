@@ -102,6 +102,16 @@ class RecipePage extends \Page
 
     /**
      * @var array
+     * @config
+     */
+    private static $cascade_duplicates = [
+        'Image',
+        'Ingredients',
+        'Directions',
+    ];
+
+    /**
+     * @var array
      */
     private static array $defaults = [
         'ShowInMenu' => false,
