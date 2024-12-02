@@ -243,8 +243,7 @@ class RecipePage extends \Page
                     ->addComponent(GridFieldTitleHeader::create())
                     ->addComponent(GridFieldEditableColumns::create())
                     ->addComponent(GridFieldDeleteAction::create())
-                    ->addComponent(GridFieldAddNewInlineButton::create())
-                    ->addComponent(GridFieldEditButton::create());
+                    ->addComponent(GridFieldAddNewInlineButton::create());
 
                 $directionsConfig->getComponentByType(GridFieldEditableColumns::class)->setDisplayFields(array(
                     'Title' => array(
