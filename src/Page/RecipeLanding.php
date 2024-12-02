@@ -75,7 +75,7 @@ class RecipeLanding extends \Page
             $fields->dataFieldByName('Content')
                 ->setTitle('Summary')
                 ->setRows(5);
-            
+
             if ($this->ID) {
                 $config = GridFieldConfig_RelationEditor::create()
                     ->addComponent(new GridFieldOrderableRows('SortOrder'))
