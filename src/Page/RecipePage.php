@@ -2,24 +2,26 @@
 
 namespace Dynamic\RecipeBook\Page;
 
-use Dynamic\RecipeBook\Model\RecipeDirection;
-use Dynamic\RecipeBook\Model\RecipeIngredient;
-use SilverStripe\Forms\FieldGroup;
-use SilverStripe\Forms\FieldList;
-use SilverStripe\Forms\GridField\GridField;
-use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
-use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
-use SilverStripe\Forms\GridField\GridFieldEditButton;
-use SilverStripe\Forms\ReadonlyField;
-use SilverStripe\Forms\TextField;
+use SilverStripe\ORM\DB;
+use SilverStripe\Assets\Image;
 use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DataObject;
-use SilverStripe\ORM\DB;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\HasManyList;
+use SilverStripe\Forms\FieldGroup;
 use SilverStripe\ORM\ManyManyList;
+use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\Forms\GridField\GridField;
+use Dynamic\RecipeBook\Model\RecipeDirection;
+use Dynamic\RecipeBook\Model\RecipeIngredient;
+use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Versioned\GridFieldArchiveAction;
-use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
+use SilverStripe\Forms\GridField\GridFieldEditButton;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
+use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
+use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
+use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 
 /**
  * Class RecipePage
@@ -63,6 +65,13 @@ class RecipePage extends \Page
     /**
      * @var array
      */
+    private static $has_one = [
+        'Image' => Image::class,
+    ];
+
+    /**
+     * @var array
+     */
     private static array $has_many = [
         'Ingredients' => RecipeIngredient::class,
         'Directions' => RecipeDirection::class,
@@ -82,6 +91,23 @@ class RecipePage extends \Page
         'Categories' => [
             'SortOrder' => 'Int',
         ],
+    ];
+
+    /**
+     * @var string[]
+     */
+    private static $owns = [
+        'Image',
+    ];
+
+    /**
+     * @var array
+     * @config
+     */
+    private static $cascade_duplicates = [
+        'Image',
+        'Ingredients',
+        'Directions',
     ];
 
     /**
@@ -113,6 +139,13 @@ class RecipePage extends \Page
     public function getCMSFields(): FieldList
     {
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
+            $fields->insertAfter(
+                'Title',
+                UploadField::create('Image')
+                    ->setAllowedMaxFileNumber(1)
+                    ->setAllowedFileCategories('image')
+                    ->setFolderName('Uploads/Recipe/Image')
+            );
 
             $fields->addFieldsToTab(
                 'Root.Main',
@@ -133,6 +166,10 @@ class RecipePage extends \Page
                 ],
                 'Content'
             );
+
+            $fields->dataFieldByName('Content')
+                ->setTitle('Summary')
+                ->setRows(5);
 
             if ($this->exists()) {
                 $fields->addFieldToTab(

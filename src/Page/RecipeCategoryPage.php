@@ -70,6 +70,10 @@ class RecipeCategoryPage extends \Page
                     ->setTitle(_t(__CLASS__ . '.RecipesPerPage', 'Recipes Per Page')),
                 'Content'
             );
+
+            $fields->dataFieldByName('Content')
+                ->setTitle('Summary')
+                ->setRows(5);
         });
 
         $fields = parent::getCMSFields();
