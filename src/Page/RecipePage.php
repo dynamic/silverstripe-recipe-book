@@ -15,6 +15,7 @@ use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\GridField\GridField;
 use Dynamic\RecipeBook\Model\RecipeDirection;
 use Dynamic\RecipeBook\Model\RecipeIngredient;
+use SilverStripe\AssetAdmin\Forms\UploadField;
 use Dynamic\RecipeBook\Page\RecipeCategoryPage;
 use SilverStripe\Forms\GridField\GridFieldConfig;
 use SilverStripe\Versioned\GridFieldArchiveAction;
@@ -83,6 +84,7 @@ class RecipePage extends \Page
 
     /**
      * @var array
+     * @config
      */
     private static array $has_many = [
         'Ingredients' => RecipeIngredient::class,
@@ -109,6 +111,7 @@ class RecipePage extends \Page
 
     /**
      * @var string[]
+     * @config
      */
     private static $owns = [
         'Image',
