@@ -12,6 +12,12 @@ use SilverStripe\ORM\ManyManyList;
 use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
+/**
+ * Class \Dynamic\RecipeBook\Page\RecipeLanding
+ *
+ * @property int $PerPage
+ * @method \SilverStripe\ORM\ManyManyList|\Dynamic\RecipeBook\Page\RecipeCategoryPage[] FeaturedCategories()
+ */
 class RecipeLanding extends \Page
 {
     /**

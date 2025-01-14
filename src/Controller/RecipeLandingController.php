@@ -5,6 +5,13 @@ namespace Dynamic\RecipeBook\Page;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\ORM\PaginatedList;
 
+/**
+ * Class \Dynamic\RecipeBook\Page\RecipeLandingController
+ *
+ * @property \Dynamic\RecipeBook\Page\RecipeLanding $dataRecord
+ * @method \Dynamic\RecipeBook\Page\RecipeLanding data()
+ * @mixin \Dynamic\RecipeBook\Page\RecipeLanding
+ */
 class RecipeLandingController extends \PageController
 {
     /**

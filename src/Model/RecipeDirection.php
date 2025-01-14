@@ -9,12 +9,11 @@ use SilverStripe\ORM\DataObject;
 
 /**
  * Class RecipeDirection
- * @package Dynamic\RecipeBook\Page
  *
  * @property string $Title
  * @property int $Sort
  * @property int $RecipeID
- * @method RecipePage Recipe()
+ * @method \Dynamic\RecipeBook\Page\RecipePage Recipe()
  */
 class RecipeDirection extends DataObject
 {
