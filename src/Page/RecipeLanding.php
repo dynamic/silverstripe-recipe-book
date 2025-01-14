@@ -72,6 +72,10 @@ class RecipeLanding extends \Page
     public function getCMSFields(): FieldList
     {
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
+            $fields->dataFieldByName('Content')
+                ->setTitle('Summary')
+                ->setRows(5);
+
             if ($this->ID) {
                 $config = GridFieldConfig_RelationEditor::create()
                     ->addComponent(new GridFieldOrderableRows('SortOrder'))
