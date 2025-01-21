@@ -33,15 +33,16 @@ use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 
 /**
  * Class RecipePage
- * @package Dynamic\RecipeBook\Page
  *
- * @property int $Servings
+ * @property string $Servings
  * @property string $PrepTime
  * @property string $CookTime
  * @property string $Difficulty
- * @method HasManyList Ingredients()
- * @method HasManyList Directions()
- * @method ManyManyList Categories()
+ * @property int $ImageID
+ * @method \SilverStripe\Assets\Image Image()
+ * @method \SilverStripe\ORM\DataList|\Dynamic\RecipeBook\Model\RecipeIngredient[] Ingredients()
+ * @method \SilverStripe\ORM\DataList|\Dynamic\RecipeBook\Model\RecipeDirection[] Directions()
+ * @method \SilverStripe\ORM\ManyManyList|\Dynamic\RecipeBook\Page\RecipeCategoryPage[] Categories()
  */
 class RecipePage extends \Page
 {
@@ -78,7 +79,7 @@ class RecipePage extends \Page
      * @var array
      * @config
      */
-    private static $has_one = [
+    private static array $has_one = [
         'Image' => Image::class,
     ];
 
@@ -113,7 +114,7 @@ class RecipePage extends \Page
      * @var string[]
      * @config
      */
-    private static $owns = [
+    private static array $owns = [
         'Image',
     ];
 
@@ -121,8 +122,16 @@ class RecipePage extends \Page
      * @var array
      * @config
      */
-    private static $cascade_duplicates = [
+    private static array $cascade_duplicates = [
         'Image',
+        'Ingredients',
+        'Directions',
+    ];
+
+    /**
+     * @var array|string[]
+     */
+    private static array $cascade_deletes = [
         'Ingredients',
         'Directions',
     ];
@@ -248,12 +257,12 @@ class RecipePage extends \Page
                     ->addComponent(GridFieldDeleteAction::create())
                     ->addComponent(GridFieldAddNewInlineButton::create());
 
-                $directionsConfig->getComponentByType(GridFieldEditableColumns::class)->setDisplayFields(array(
-                    'Title' => array(
+                $directionsConfig->getComponentByType(GridFieldEditableColumns::class)->setDisplayFields([
+                    'Title' => [
                         'title' => 'Title',
-                        'field' => TextField::class
-                    ),
-                ));
+                        'field' => TextField::class,
+                    ],
+                ]);
 
                 $catConfig
                     ->removeComponentsByType([

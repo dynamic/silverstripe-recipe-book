@@ -9,12 +9,11 @@ use SilverStripe\ORM\DataObject;
 
 /**
  * Class RecipeIngredient
- * @package Dynamic\Nucu\Model
  *
  * @property string $Title
  * @property int $Sort
  * @property int $RecipeID
- * @method RecipePage Recipe()
+ * @method \Dynamic\RecipeBook\Page\RecipePage Recipe()
  */
 class RecipeIngredient extends DataObject
 {
@@ -26,7 +25,7 @@ class RecipeIngredient extends DataObject
     /**
      * @var string
      */
-    private static $plural_name = 'Recipe Ingredients';
+    private static string $plural_name = 'Recipe Ingredients';
 
     /**
      * @var string

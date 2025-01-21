@@ -7,6 +7,12 @@ use SilverStripe\Forms\NumericField;
 use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DB;
 
+/**
+ * Class \Dynamic\RecipeBook\Page\RecipeCategoryPage
+ *
+ * @property int $RecipesPerPage
+ * @method \SilverStripe\ORM\ManyManyList|\Dynamic\RecipeBook\Page\RecipePage[] Recipes()
+ */
 class RecipeCategoryPage extends \Page
 {
     /**
