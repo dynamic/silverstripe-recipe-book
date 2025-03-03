@@ -319,7 +319,6 @@ class RecipePage extends \Page
             ])
             ->limit(15);
 
-        $random = DB::get_conn()->random();
-        return $recipes->sort($random)->limit($this->RelatedLimit);
+        return $recipes->shuffle()->limit($this->RelatedLimit);
     }
 }

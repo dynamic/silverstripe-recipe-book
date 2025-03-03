@@ -115,7 +115,6 @@ class RecipeCategoryPage extends \Page
             ->sort('Weight DESC')
             ->limit(15);
 
-        $random = DB::get_conn()->random();
-        return $recipes->sort($random);
+        return $recipes->shuffle();
     }
 }
